@@ -789,11 +789,11 @@ var Chess = function (fen) {
   }
 
   function in_check() {
-    return king_attacked(turn)
+    return false
   }
 
   function in_checkmate() {
-    return in_check() && generate_moves().length === 0
+    return false
   }
 
   function in_stalemate() {
@@ -1528,9 +1528,7 @@ var Chess = function (fen) {
         }
 
         move_string =
-          move_string +
-          ' ' +
-          move_to_san(move, generate_moves({ legal: true }))
+          move_string + ' ' + move_to_san(move, generate_moves({ legal: true }))
         make_move(move)
       }
 
