@@ -666,21 +666,22 @@ var Chess = function (fen) {
     /* return all pseudo-legal moves (this includes moves that allow the king
      * to be captured)
      */
-    if (!legal) {
-      return moves
-    }
+    // if (!legal) {
+    //   return moves
+    // }
+    return moves
 
     /* filter out illegal moves */
-    var legal_moves = []
-    for (var i = 0, len = moves.length; i < len; i++) {
-      make_move(moves[i])
-      if (!king_attacked(us)) {
-        legal_moves.push(moves[i])
-      }
-      undo_move()
-    }
+    // var legal_moves = []
+    // for (var i = 0, len = moves.length; i < len; i++) {
+    //   make_move(moves[i])
+    //   if (!king_attacked(us)) {
+    //     legal_moves.push(moves[i])
+    //   }
+    //   undo_move()
+    // }
 
-    return legal_moves
+    // return legal_moves
   }
 
   /* convert a move from 0x88 coordinates to Standard Algebraic Notation
@@ -797,7 +798,7 @@ var Chess = function (fen) {
   }
 
   function in_stalemate() {
-    return !in_check() && generate_moves().length === 0
+    return generate_moves().length === 0
   }
 
   function insufficient_material() {
