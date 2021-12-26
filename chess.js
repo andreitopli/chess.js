@@ -611,7 +611,7 @@ var Chess = function (fen) {
             if (board[square] == null) {
               add_move(board, moves, i, square, BITS.NORMAL)
             } else {
-              if (board[square].color === us) break
+              if (board[square].color === us && piece_type !== ROOK) break
               add_move(board, moves, i, square, BITS.CAPTURE)
               break
             }
