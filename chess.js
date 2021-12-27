@@ -603,17 +603,18 @@ var Chess = function (fen) {
         for (var j = 0, len = PIECE_OFFSETS[piece.type].length; j < len; j++) {
           var offset = PIECE_OFFSETS[piece.type][j]
           var square = i
-
+          var captured = false
           while (true) {
             square += offset
             if (square & 0x88) break
-
             if (board[square] == null) {
-              add_move(board, moves, i, square, BITS.NORMAL)
+              if (!captured) {
+                add_move(board, moves, i, square, BITS.NORMAL)
+              }
             } else {
-              if (board[square].color === us && piece_type !== ROOK) break
+              if (board[square].color === us) break
+              captured = true
               add_move(board, moves, i, square, BITS.CAPTURE)
-              break
             }
 
             /* break, if knight or king */
