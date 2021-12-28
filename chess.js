@@ -514,7 +514,9 @@ var Chess = function (fen) {
     return move
   }
 
-  function generate_moves(options) {
+  // Type can be either range or melee. Will enforce once switched to TS.
+  function generate_moves(options, attackType) {
+    const type = attackType || 'melee'
     function add_move(board, moves, from, to, flags) {
       /* if pawn promotion */
       if (
@@ -599,6 +601,7 @@ var Chess = function (fen) {
             add_move(board, moves, i, ep_square, BITS.EP_CAPTURE)
           }
         }
+        // Moves for ROOK, BISHOP and QUEEN
       } else if (piece_type === true || piece_type === piece.type) {
         for (var j = 0, len = PIECE_OFFSETS[piece.type].length; j < len; j++) {
           var offset = PIECE_OFFSETS[piece.type][j]
@@ -615,6 +618,9 @@ var Chess = function (fen) {
               if (board[square].color === us) break
               captured = true
               add_move(board, moves, i, square, BITS.CAPTURE)
+              if (piece.type === ROOK && type === 'range') {
+                continue
+              } else break
             }
 
             /* break, if knight or king */
@@ -1263,9 +1269,9 @@ var Chess = function (fen) {
   }
 
   /* pretty = external move object */
-  function make_pretty(ugly_move) {
+  function make_pretty(ugly_move, type) {
     var move = clone(ugly_move)
-    move.san = move_to_san(move, generate_moves({ legal: true }))
+    move.san = move_to_san(move, generate_moves({ legal: true }, type))
     move.to = algebraic(move.to)
     move.from = algebraic(move.from)
 
@@ -1365,14 +1371,15 @@ var Chess = function (fen) {
       return reset()
     },
 
-    moves: function (options) {
+    // Type can be either range or melee. Will enforce once switched to TS.
+    moves: function (options, type) {
       /* The internal representation of a chess move is in 0x88 format, and
        * not meant to be human-readable.  The code below converts the 0x88
        * square coordinates to algebraic coordinates.  It also prunes an
        * unnecessary move keys resulting from a verbose call.
        */
 
-      var ugly_moves = generate_moves(options)
+      var ugly_moves = generate_moves(options, type)
       var moves = []
 
       for (var i = 0, len = ugly_moves.length; i < len; i++) {
@@ -1384,10 +1391,10 @@ var Chess = function (fen) {
           'verbose' in options &&
           options.verbose
         ) {
-          moves.push(make_pretty(ugly_moves[i]))
+          moves.push(make_pretty(ugly_moves[i], type))
         } else {
           moves.push(
-            move_to_san(ugly_moves[i], generate_moves({ legal: true }))
+            move_to_san(ugly_moves[i], generate_moves({ legal: true }, type))
           )
         }
       }

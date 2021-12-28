@@ -2,145 +2,327 @@ if (typeof require != 'undefined') {
   var Chess = require('../chess').Chess
 }
 
-describe('Single Square Move Generation for Rook with Attack over other pieces', () => {
-  const positions = [
-    {
-      fen: 'rnb1kbnr/ppp1pp1p/8/6P1/1q1p3R/4P1P1/PPPP1P2/RNBQKBN1 w Qkq - 0 6',
-      square: 'h4',
-      verbose: false,
-      moves: [
-        'Rh5',
-        'Rh6',
-        'Rxh7',
-        'Rxh8',
-        'Rh3',
-        'Rh2',
-        'Rh1',
-        'Rg4',
-        'Rf4',
-        'Re4',
-        'Rxd4',
-        'Rxb4',
-      ],
-    },
-    {
-      fen: 'rnb1kbnr/ppp1pp1p/8/6P1/1q1p3R/4P1P1/PPPP1P2/RNBQKBN1 w Qkq - 0 6',
-      square: 'h4',
-      verbose: true,
-      moves: [
-        {
-          color: 'w',
-          flags: 'n',
-          from: 'h4',
-          piece: 'r',
-          san: 'Rh5',
-          to: 'h5',
-        },
-        {
-          color: 'w',
-          flags: 'n',
-          from: 'h4',
-          piece: 'r',
-          san: 'Rh6',
-          to: 'h6',
-        },
-        {
-          captured: 'p',
-          color: 'w',
-          flags: 'c',
-          from: 'h4',
-          piece: 'r',
-          san: 'Rxh7',
-          to: 'h7',
-        },
-        {
-          captured: 'r',
-          color: 'w',
-          flags: 'c',
-          from: 'h4',
-          piece: 'r',
-          san: 'Rxh8',
-          to: 'h8',
-        },
-        {
-          color: 'w',
-          flags: 'n',
-          from: 'h4',
-          piece: 'r',
-          san: 'Rh3',
-          to: 'h3',
-        },
-        {
-          color: 'w',
-          flags: 'n',
-          from: 'h4',
-          piece: 'r',
-          san: 'Rh2',
-          to: 'h2',
-        },
-        {
-          color: 'w',
-          flags: 'n',
-          from: 'h4',
-          piece: 'r',
-          san: 'Rh1',
-          to: 'h1',
-        },
-        {
-          color: 'w',
-          flags: 'n',
-          from: 'h4',
-          piece: 'r',
-          san: 'Rg4',
-          to: 'g4',
-        },
-        {
-          color: 'w',
-          flags: 'n',
-          from: 'h4',
-          piece: 'r',
-          san: 'Rf4',
-          to: 'f4',
-        },
-        {
-          color: 'w',
-          flags: 'n',
-          from: 'h4',
-          piece: 'r',
-          san: 'Re4',
-          to: 'e4',
-        },
-        {
-          captured: 'p',
-          color: 'w',
-          flags: 'c',
-          from: 'h4',
-          piece: 'r',
-          san: 'Rxd4',
-          to: 'd4',
-        },
-        {
-          captured: 'q',
-          color: 'w',
-          flags: 'c',
-          from: 'h4',
-          piece: 'r',
-          san: 'Rxb4',
-          to: 'b4',
-        },
-      ],
-    },
-  ]
+describe('generate range moves for ROOK', () => {
+  test('verbose false, range attack for ROOK', () => {
+    const chess = new Chess(
+      'rnb1kbnr/ppp1pp1p/8/6P1/1q1p3R/4P1P1/PPPP1P2/RNBQKBN1 w Qkq - 0 6'
+    )
+    const moves = chess.moves(
+      {
+        square: 'h4',
+        verbose: false,
+      },
+      'range'
+    )
+    expect(moves).toEqual([
+      'Rh5',
+      'Rh6',
+      'Rxh7',
+      'Rxh8',
+      'Rh3',
+      'Rh2',
+      'Rh1',
+      'Rg4',
+      'Rf4',
+      'Re4',
+      'Rxd4',
+      'Rxb4',
+    ])
+  })
+  test('verbose true, range attack for ROOK', () => {
+    const chess = new Chess(
+      'rnb1kbnr/ppp1pp1p/8/6P1/1q1p3R/4P1P1/PPPP1P2/RNBQKBN1 w Qkq - 0 6'
+    )
+    const moves = chess.moves(
+      {
+        square: 'h4',
+        verbose: true,
+      },
+      'range'
+    )
+    expect(moves).toEqual([
+      {
+        color: 'w',
+        flags: 'n',
+        from: 'h4',
+        piece: 'r',
+        san: 'Rh5',
+        to: 'h5',
+      },
+      {
+        color: 'w',
+        flags: 'n',
+        from: 'h4',
+        piece: 'r',
+        san: 'Rh6',
+        to: 'h6',
+      },
+      {
+        captured: 'p',
+        color: 'w',
+        flags: 'c',
+        from: 'h4',
+        piece: 'r',
+        san: 'Rxh7',
+        to: 'h7',
+      },
+      {
+        captured: 'r',
+        color: 'w',
+        flags: 'c',
+        from: 'h4',
+        piece: 'r',
+        san: 'Rxh8',
+        to: 'h8',
+      },
+      {
+        color: 'w',
+        flags: 'n',
+        from: 'h4',
+        piece: 'r',
+        san: 'Rh3',
+        to: 'h3',
+      },
+      {
+        color: 'w',
+        flags: 'n',
+        from: 'h4',
+        piece: 'r',
+        san: 'Rh2',
+        to: 'h2',
+      },
+      {
+        color: 'w',
+        flags: 'n',
+        from: 'h4',
+        piece: 'r',
+        san: 'Rh1',
+        to: 'h1',
+      },
+      {
+        color: 'w',
+        flags: 'n',
+        from: 'h4',
+        piece: 'r',
+        san: 'Rg4',
+        to: 'g4',
+      },
+      {
+        color: 'w',
+        flags: 'n',
+        from: 'h4',
+        piece: 'r',
+        san: 'Rf4',
+        to: 'f4',
+      },
+      {
+        color: 'w',
+        flags: 'n',
+        from: 'h4',
+        piece: 'r',
+        san: 'Re4',
+        to: 'e4',
+      },
+      {
+        captured: 'p',
+        color: 'w',
+        flags: 'c',
+        from: 'h4',
+        piece: 'r',
+        san: 'Rxd4',
+        to: 'd4',
+      },
+      {
+        captured: 'q',
+        color: 'w',
+        flags: 'c',
+        from: 'h4',
+        piece: 'r',
+        san: 'Rxb4',
+        to: 'b4',
+      },
+    ])
+  })
+})
 
-  positions.forEach((position) => {
-    const chess = new Chess(position.fen)
-    test(position.fen + ' ' + position.square, () => {
-      const moves = chess.moves({
-        square: position.square,
-        verbose: position.verbose,
-      })
-      console.log('moves ', moves)
-      expect(moves).toEqual(position.moves)
-    })
+describe('generate melee moves for ROOK', () => {
+  test('verbose false - melee moves for ROOK', () => {
+    const chess = new Chess(
+      'rnb1kbnr/ppp1pp1p/8/6P1/1q1p3R/4P1P1/PPPP1P2/RNBQKBN1 w Qkq - 0 6'
+    )
+    const moves = chess.moves(
+      {
+        square: 'h4',
+        verbose: false,
+      },
+      'melee'
+    )
+    expect(moves).toEqual([
+      'Rh5',
+      'Rh6',
+      'Rxh7',
+      'Rh3',
+      'Rh2',
+      'Rh1',
+      'Rg4',
+      'Rf4',
+      'Re4',
+      'Rxd4',
+    ])
+  })
+  test('verbose true, melee attack for ROOK', () => {
+    const chess = new Chess(
+      'rnb1kbnr/ppp1pp1p/8/6P1/1q1p3R/4P1P1/PPPP1P2/RNBQKBN1 w Qkq - 0 6'
+    )
+    const moves = chess.moves(
+      {
+        square: 'h4',
+        verbose: true,
+      },
+      'melee'
+    )
+    expect(moves).toEqual([
+      {
+        color: 'w',
+        flags: 'n',
+        from: 'h4',
+        piece: 'r',
+        san: 'Rh5',
+        to: 'h5',
+      },
+      {
+        color: 'w',
+        flags: 'n',
+        from: 'h4',
+        piece: 'r',
+        san: 'Rh6',
+        to: 'h6',
+      },
+      {
+        captured: 'p',
+        color: 'w',
+        flags: 'c',
+        from: 'h4',
+        piece: 'r',
+        san: 'Rxh7',
+        to: 'h7',
+      },
+      {
+        color: 'w',
+        flags: 'n',
+        from: 'h4',
+        piece: 'r',
+        san: 'Rh3',
+        to: 'h3',
+      },
+      {
+        color: 'w',
+        flags: 'n',
+        from: 'h4',
+        piece: 'r',
+        san: 'Rh2',
+        to: 'h2',
+      },
+      {
+        color: 'w',
+        flags: 'n',
+        from: 'h4',
+        piece: 'r',
+        san: 'Rh1',
+        to: 'h1',
+      },
+      {
+        color: 'w',
+        flags: 'n',
+        from: 'h4',
+        piece: 'r',
+        san: 'Rg4',
+        to: 'g4',
+      },
+      {
+        color: 'w',
+        flags: 'n',
+        from: 'h4',
+        piece: 'r',
+        san: 'Rf4',
+        to: 'f4',
+      },
+      {
+        color: 'w',
+        flags: 'n',
+        from: 'h4',
+        piece: 'r',
+        san: 'Re4',
+        to: 'e4',
+      },
+      {
+        captured: 'p',
+        color: 'w',
+        flags: 'c',
+        from: 'h4',
+        piece: 'r',
+        san: 'Rxd4',
+        to: 'd4',
+      },
+    ])
+  })
+})
+
+describe('generate moves for QUEEN', () => {
+  test('verbose false, range moves for QUEEN', () => {
+    const chess = new Chess(
+      'rnb1k1nr/pppp1qpp/4p3/5p2/4P3/b4Q2/1PPP1PPP/RNB1KBNR w kq - 4 6'
+    )
+    const moves = chess.moves(
+      {
+        square: 'f3',
+        verbose: false,
+      },
+      'range'
+    )
+    console.log('moves verbose false range attack for QUEEN : ', moves)
+    expect(moves).toEqual([
+      'Qf4',
+      'Qxf5',
+      'Qg4',
+      'Qh5',
+      'Qg3',
+      'Qh3',
+      'Qe2',
+      'Qd1',
+      'Qe3',
+      'Qd3',
+      'Qc3',
+      'Qb3',
+      'Qxa3',
+    ])
+  })
+  test('verbose false, range moves for QUEEN', () => {
+    const chess = new Chess(
+      'rnb1k1nr/pppp1qpp/4p3/5p2/4P3/b4Q2/1PPP1PPP/RNB1KBNR w kq - 4 6'
+    )
+    const moves = chess.moves(
+      {
+        square: 'f3',
+        verbose: false,
+      },
+      'melee'
+    )
+    console.log('moves verbose false range attack for QUEEN : ', moves)
+    expect(moves).toEqual([
+      'Qf4',
+      'Qxf5',
+      'Qg4',
+      'Qh5',
+      'Qg3',
+      'Qh3',
+      'Qe2',
+      'Qd1',
+      'Qe3',
+      'Qd3',
+      'Qc3',
+      'Qb3',
+      'Qxa3',
+    ])
   })
 })
