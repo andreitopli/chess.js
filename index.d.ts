@@ -9,6 +9,8 @@
  * One of the possible squares on a chess board in san format,
  * e.g. "a8" to "h1".
  */
+type MoveType = 'range' | 'melee'
+
 export type Square =
   | 'a8'
   | 'b8'
@@ -288,15 +290,18 @@ export interface ChessInstance {
    * @returns The list of all valid moves, either in SAN format, or as
    * verbose objects.
    */
-  moves(options: {
-    /** Set to true to return verbose move objects instead of strings */
-    verbose: true
-    /**
-     * The string to test if it is a valid move, if it is not then an
-     * empty array is returned
-     */
-    square?: string | undefined
-  }): Move[]
+  moves(
+    options: {
+      /** Set to true to return verbose move objects instead of strings */
+      verbose: true
+      /**
+       * The string to test if it is a valid move, if it is not then an
+       * empty array is returned
+       */
+      square?: string | undefined
+    },
+    type: MoveType
+  ): Move[]
 
   /**
    * Returns a list of legal moves from the current position.
@@ -307,15 +312,18 @@ export interface ChessInstance {
    * @returns The list of all valid moves, either in SAN format, or as
    * verbose objects.
    */
-  moves(options?: {
-    /** Set to true to return verbose move objects instead of strings */
-    verbose?: false | undefined
-    /**
-     * The string to test if it is a valid move, if it is not then an
-     * empty array is returned
-     */
-    square?: string | undefined
-  }): string[]
+  moves(
+    options?: {
+      /** Set to true to return verbose move objects instead of strings */
+      verbose?: false | undefined
+      /**
+       * The string to test if it is a valid move, if it is not then an
+       * empty array is returned
+       */
+      square?: string | undefined
+    },
+    type: MoveType
+  ): string[]
 
   /**
    * Returns a list of legal moves from the current position.
@@ -326,15 +334,18 @@ export interface ChessInstance {
    * @returns The list of all valid moves, either in SAN format, or as
    * verbose objects.
    */
-  moves(options?: {
-    /** Set to true to return verbose move objects instead of strings */
-    verbose?: boolean | undefined
-    /**
-     * The string to test if it is a valid move, if it is not then an
-     * empty array is returned
-     */
-    square?: string | undefined
-  }): string[] | Move[]
+  moves(
+    options?: {
+      /** Set to true to return verbose move objects instead of strings */
+      verbose?: boolean | undefined
+      /**
+       * The string to test if it is a valid move, if it is not then an
+       * empty array is returned
+       */
+      square?: string | undefined
+    },
+    type: MoveType
+  ): string[] | Move[]
 
   /**
    * Returns true or false if the side to move is in check.
