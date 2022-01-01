@@ -2,7 +2,7 @@ if (typeof require != 'undefined') {
   var Chess = require('../chess').Chess
 }
 
-describe('generate range moves for ROOK', () => {
+describe('generate range moves for ROOK to jump over enemy piece', () => {
   test('verbose false, range attack for ROOK', () => {
     const chess = new Chess(
       'rnb1kbnr/ppp1pp1p/8/6P1/1q1p3R/4P1P1/PPPP1P2/RNBQKBN1 w Qkq - 0 6'
@@ -145,7 +145,7 @@ describe('generate range moves for ROOK', () => {
   })
 })
 
-describe('generate melee moves for ROOK', () => {
+describe('generate melee moves for ROOK to jump over enemy piece', () => {
   test('verbose false - melee moves for ROOK', () => {
     const chess = new Chess(
       'rnb1kbnr/ppp1pp1p/8/6P1/1q1p3R/4P1P1/PPPP1P2/RNBQKBN1 w Qkq - 0 6'
@@ -265,6 +265,61 @@ describe('generate melee moves for ROOK', () => {
         to: 'd4',
       },
     ])
+  })
+})
+
+describe('generate range and melee moves for ROOK to jump over self pieces', () => {
+  test('range attacks for rook with own piece in front, must jump over', () => {
+    const testParams = {
+      fen: 'rnbqkbnr/ppppp3/5p1p/6P1/8/7N/PPPPPPP1/RNBQKB1R w KQkq - 0 4',
+      square: 'h1',
+      verbose: false,
+      type: 'range',
+      moves: ['Rh2', 'Rxh6', 'Rxh8', 'Rg1'],
+    }
+
+    const chess = new Chess(testParams.fen)
+    const moves = chess.moves(
+      { square: testParams.square, verbose: testParams.verbose },
+      testParams.type
+    )
+    expect(moves).toEqual(testParams.moves)
+  })
+
+  test('melee attacks for rook with own piece in front, must NOT jump over', () => {
+    const testParams = {
+      fen: 'rnbqkbnr/ppppp3/5p1p/6P1/8/7N/PPPPPPP1/RNBQKB1R w KQkq - 0 4',
+      square: 'h1',
+      verbose: false,
+      type: 'melee',
+      moves: ['Rh2', 'Rg1'],
+    }
+
+    const chess = new Chess(testParams.fen)
+    const moves = chess.moves(
+      { square: testParams.square, verbose: testParams.verbose },
+      testParams.type
+    )
+    expect(moves).toEqual(testParams.moves)
+  })
+})
+
+describe('test range moves for ROOK from initial starting fen', () => {
+  test('range moves from starting fen, should be able to attack 2 pieces', () => {
+    const testParams = {
+      fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+      square: 'h1',
+      verbose: false,
+      type: 'range',
+      moves: ['Rxh7', 'Rxh8'],
+    }
+
+    const chess = new Chess(testParams.fen)
+    const moves = chess.moves(
+      { square: testParams.square, verbose: testParams.verbose },
+      testParams.type
+    )
+    expect(moves).toEqual(testParams.moves)
   })
 })
 
