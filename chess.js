@@ -1829,7 +1829,7 @@ var Chess = function (fen) {
       return turn
     },
 
-    move: function (move, options) {
+    move: function (move, options, type) {
       /* The move function can be called with in the following parameters:
        *
        * .move('Nxb7')      <- where 'move' is a case-sensitive SAN string
@@ -1852,7 +1852,7 @@ var Chess = function (fen) {
       if (typeof move === 'string') {
         move_obj = move_from_san(move, sloppy)
       } else if (typeof move === 'object') {
-        var moves = generate_moves()
+        var moves = generate_moves({}, type)
 
         /* convert the pretty move object to an ugly move object */
         for (var i = 0, len = moves.length; i < len; i++) {

@@ -309,7 +309,7 @@ describe('test range moves for ROOK from initial starting fen', () => {
     const testParams = {
       fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
       square: 'h1',
-      verbose: false,
+      verbose: true,
       type: 'range',
       moves: ['Rxh7', 'Rxh8'],
     }
@@ -319,6 +319,7 @@ describe('test range moves for ROOK from initial starting fen', () => {
       { square: testParams.square, verbose: testParams.verbose },
       testParams.type
     )
+    console.log('moves for ROOK range for default position', moves)
     expect(moves).toEqual(testParams.moves)
   })
 })
