@@ -520,7 +520,8 @@ export interface ChessInstance {
        * non-standard move notations.
        */
       sloppy?: boolean | undefined
-    }
+    },
+    type: MoveType
   ): Move | null
 
   /**
