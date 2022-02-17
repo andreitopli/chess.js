@@ -309,7 +309,7 @@ describe('test range moves for ROOK from initial starting fen', () => {
     const testParams = {
       fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
       square: 'h1',
-      verbose: true,
+      verbose: false,
       type: 'range',
       moves: ['Rxh7', 'Rxh8'],
     }

@@ -492,6 +492,39 @@ var Chess = function (fen) {
     return piece
   }
 
+  function make_move_from_distance(move) {
+    var us = turn
+    var them = swap_color(us)
+    push(move)
+    console.log('make the move')
+    board[move.to] = null
+
+    /* if big pawn move, update the en passant square */
+    if (move.flags & BITS.BIG_PAWN) {
+      if (turn === 'b') {
+        ep_square = move.to - 16
+      } else {
+        ep_square = move.to + 16
+      }
+    } else {
+      ep_square = EMPTY
+    }
+
+    /* reset the 50 move counter if a pawn is moved or a piece is captured */
+    if (move.piece === PAWN) {
+      half_moves = 0
+    } else if (move.flags & (BITS.CAPTURE | BITS.EP_CAPTURE)) {
+      half_moves = 0
+    } else {
+      half_moves++
+    }
+
+    if (turn === BLACK) {
+      move_number++
+    }
+    turn = swap_color(turn)
+  }
+
   function build_move(board, from, to, flags, promotion) {
     var move = {
       color: turn,
@@ -1883,6 +1916,56 @@ var Chess = function (fen) {
       return pretty_move
     },
 
+    moveFromDistance: function (move, options) {
+      var sloppy =
+        typeof options !== 'undefined' && 'sloppy' in options
+          ? options.sloppy
+          : false
+
+      var move_obj = null
+
+      if (typeof move === 'string') {
+        move_obj = move_from_san(move, sloppy)
+      } else if (typeof move === 'object') {
+        var moves = generate_moves(
+          {
+            square: move.from,
+            verbose: true,
+          },
+          'range'
+        )
+        console.log('moves', moves)
+        /* convert the pretty move object to an ugly move object */
+        for (var i = 0, len = moves.length; i < len; i++) {
+          console.log('alebraic from', algebraic(moves[i].from))
+          console.log('algebraic to', algebraic(moves[i].to))
+          console.log('move', move)
+          if (
+            move.from === algebraic(moves[i].from) &&
+            move.to === algebraic(moves[i].to)
+          ) {
+            move_obj = moves[i]
+            break
+          }
+        }
+      }
+      console.log('move obj', move_obj)
+
+      /* failed to find move */
+      if (!move_obj) {
+        return null
+      }
+
+      /* need to make a copy of move because we can't generate SAN after the
+       * move is made
+       */
+      var pretty_move = make_pretty(move_obj)
+
+      make_move_from_distance(move_obj)
+
+      return pretty_move
+    },
+
     undo: function () {
       var move = undo_move()
       return move ? make_pretty(move) : null
@@ -1920,24 +2003,26 @@ var Chess = function (fen) {
     history: function (options) {
       var reversed_history = []
       var move_history = []
-      var verbose =
-        typeof options !== 'undefined' &&
-        'verbose' in options &&
-        options.verbose
+      //TODO -- reenable history
 
-      while (history.length > 0) {
-        reversed_history.push(undo_move())
-      }
+      // var verbose =
+      //   typeof options !== 'undefined' &&
+      //   'verbose' in options &&
+      //   options.verbose
 
-      while (reversed_history.length > 0) {
-        var move = reversed_history.pop()
-        if (verbose) {
-          move_history.push(make_pretty(move))
-        } else {
-          move_history.push(move_to_san(move, generate_moves({ legal: true })))
-        }
-        make_move(move)
-      }
+      // while (history.length > 0) {
+      //   reversed_history.push(undo_move())
+      // }
+
+      // while (reversed_history.length > 0) {
+      //   var move = reversed_history.pop()
+      //   if (verbose) {
+      //     move_history.push(make_pretty(move))
+      //   } else {
+      //     move_history.push(move_to_san(move, generate_moves({ legal: true })))
+      //   }
+      //   make_move(move)
+      // }
 
       return move_history
     },
