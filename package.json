@@ -1,15 +1,13 @@
 {
-  "name": "chess.js",
+  "name": "chess.js-wargame",
   "version": "0.12.0",
   "license": "BSD-2-Clause",
   "main": "chess.js",
-  "homepage": "https://github.com/jhlywa/chess.js",
-  "keywords": [
-    "chess"
-  ],
+  "homepage": "https://github.com/jhlywa/chess.js-wargame",
+  "keywords": ["chess"],
   "repository": {
     "type": "git",
-    "url": "https://github.com/jhlywa/chess.js.git"
+    "url": "https://github.com/andreitopli/chess.js-wargame.git"
   },
   "devDependencies": {
     "jest": "^27.0.1",
