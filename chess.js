@@ -496,7 +496,6 @@ var Chess = function (fen) {
     var us = turn
     var them = swap_color(us)
     push(move)
-    console.log('make the move')
     board[move.to] = null
 
     /* if big pawn move, update the en passant square */
@@ -1934,12 +1933,8 @@ var Chess = function (fen) {
           },
           'range'
         )
-        console.log('moves', moves)
         /* convert the pretty move object to an ugly move object */
         for (var i = 0, len = moves.length; i < len; i++) {
-          console.log('alebraic from', algebraic(moves[i].from))
-          console.log('algebraic to', algebraic(moves[i].to))
-          console.log('move', move)
           if (
             move.from === algebraic(moves[i].from) &&
             move.to === algebraic(moves[i].to)
@@ -1949,7 +1944,6 @@ var Chess = function (fen) {
           }
         }
       }
-      console.log('move obj', move_obj)
 
       /* failed to find move */
       if (!move_obj) {
