@@ -524,6 +524,17 @@ export interface ChessInstance {
     type: MoveType
   ): Move | null
 
+  moveFromDistance(
+    move: string | ShortMove,
+    options?: {
+      /**
+       * An optional sloppy flag can be used to parse a variety of
+       * non-standard move notations.
+       */
+      sloppy?: boolean | undefined
+    }
+  ): Move | null
+
   /**
    * Take back the last half-move, returning a move object if successful,
    * otherwise null.
