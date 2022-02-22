@@ -3,7 +3,7 @@
   "version": "0.12.0",
   "license": "BSD-2-Clause",
   "main": "chess.js",
-  "homepage": "https://github.com/jhlywa/chess.js-wargame",
+  "homepage": "https://github.com/andreitopli/chess.js-wargame.git",
   "keywords": ["chess"],
   "repository": {
     "type": "git",
